@@ -25,6 +25,8 @@ class Game{
         })
     }
 
+  
+
     spawnCoin(){
         let rX = Math.floor(Math.random() * 400);
         let rY = 0;
@@ -33,7 +35,7 @@ class Game{
         newCoin.moveDownForever();
     }
 
-    clearUnusedCoins(){
+    clearUnusedCoins2(){
         this.coinArray.forEach((ob, i)=>{
             if(ob.y > 400){
                 this.coinArray.splice(i, 1)
@@ -41,6 +43,14 @@ class Game{
         })
     }
 
+    clearUnusedCoins1() {
+        this.coinArray.forEach((obs, i)=>{
+            if (futureX + this.theHero.width >= obs.x && futureX <= obs.x + obs.width 
+                && futureY + this.theHero.height >= obs.y && futureY <= obs.y + obs.height){
+                    this.coinArray.splice(i, 1)
+        }
+    })
+}
 
     collisionDetect(futureX, futureY){
         let canMove = true;
@@ -50,15 +60,24 @@ class Game{
             console.log(futureX, futureY, this.theHero.width, this.theHero.height, obs.x, obs.y, obs.width, obs.height)
 
            
-        if(futureX + this.theHero.width >= obs.x && futureX <= obs.x + obs.width 
-            && futureY + this.theHero.height >= obs.y && futureY <= obs.y + obs.height){
+        if(futureX + this.theHero.width - 20 >= obs.x && futureX <= obs.x + obs.width - 20
+            && futureY + this.theHero.height - 20 >= obs.y && futureY <= obs.y + obs.height - 20){
                 canMove = false
                 score -= 300;
                 document.querySelector("body > div:nth-child(1) > span").innerText = score;
                 //alert("game over");
              }
         })
-       
+
+        this.coinArray.forEach((obs)=>{
+        if (futureX + this.theHero.width >= obs.x && futureX <= obs.x + obs.width 
+            && futureY + this.theHero.height >= obs.y && futureY <= obs.y + obs.height){
+                score += 300;
+                document.querySelector("body > div:nth-child(1) > span").innerText = score;
+                this.clearUnusedCoins1;
+                //alert("game over");
+             }
+        })
         return canMove;
     }
 }
